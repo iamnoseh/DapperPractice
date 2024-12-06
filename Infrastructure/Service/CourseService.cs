@@ -2,8 +2,6 @@ using Infrastructure.Interface;
 using Model.Courses;
 using Npgsql;
 using Dapper;
-
-
 namespace Infrastructure.Service;
 
 public class CourseService: ICourseService
@@ -12,11 +10,19 @@ public class CourseService: ICourseService
     {
         try
         {
-            var connectionString = "Server=127.0.0.1;Port=5432;Database=CourseDB;User Id=postgres;Password=12345;";
+            var connectionString = "Server=127.0.0.1;Port=5432;Database=coursedb;User Id=postgres;Password=12345;";
             using var connection = new NpgsqlConnection(connectionString);
             string cmd =
                 "Insert into Courses(Name,Description,CreateDate,Enddate,TeacherId,StudentId) values (@Name,@Description,@CreateDate,@EndDate,@TeacherId,@StudentId)";
-            var effect = connection.Query(cmd, course);
+            var effect = connection.Execute(cmd, course);
+            if (effect != 0)
+            {
+                Console.WriteLine("Course added!");
+            }
+            else
+            {
+                Console.WriteLine("Course doesn't exist!");
+            }
         }
         catch (NpgsqlException e)
         {
@@ -34,7 +40,7 @@ public class CourseService: ICourseService
     {
         try
         {
-            var connectionString = "Server=127.0.0.1;Port=5432;Database=CourseDB;User Id=postgres;Password=12345;";
+            var connectionString = "Server=127.0.0.1;Port=5432;Database=coursedb;User Id=postgres;Password=12345;";
             using var connection = new NpgsqlConnection(connectionString);
             string cmd =
                 "Select * from Courses";
@@ -58,11 +64,19 @@ public class CourseService: ICourseService
     {
         try
         {
-            var connectionString = "Server=127.0.0.1;Port=5432;Database=CourseDB;User Id=postgres;Password=12345;";
+            var connectionString = "Server=127.0.0.1;Port=5432;Database=coursedb;User Id=postgres;Password=12345;";
             using var connection = new NpgsqlConnection(connectionString);
             string cmd  = "Update Courses set Id = @Id,Name = @Name,Description = @description,CreateDate = @CreateDate,EndDate = @EndDate,TeacherId = @TeacherId,StudentId = @StudentId where Id = @Id";
             var effect = connection.Execute(cmd, course);
-            Console.WriteLine("Course Updated !");
+            if (effect != 0)
+            {
+                Console.WriteLine("Course Updated !");
+            }
+
+            else
+            {
+                Console.WriteLine("Courses is not updated");
+            }
         }
         catch (NpgsqlException e)
         {
@@ -80,7 +94,7 @@ public class CourseService: ICourseService
     {
         try
         {
-            string connectionString = "Server=127.0.0.1;Port=5432;Database=CourseDB;User Id=postgres;Password=12345;";
+            string connectionString = "Server=127.0.0.1;Port=5432;Database=coursedb;User Id=postgres;Password=12345;";
             using var connection = new NpgsqlConnection(connectionString);
             string cmd  = "Delete from Courses where Id = @Id";
             var effect = connection.Execute(cmd, courseId);
@@ -102,7 +116,7 @@ public class CourseService: ICourseService
     {
         try
         {
-            string connectionString = "Server=127.0.0.1;Port=5432;Database=CourseDB;User Id=postgres;Password=12345;";
+            string connectionString = "Server=127.0.0.1;Port=5432;Database=coursedb;User Id=postgres;Password=12345;";
             using var connection = new NpgsqlConnection(connectionString);
             string cmd = "Select * from Courses where Id = @Id";
             var course = connection.Query<Course>(cmd, new { Id = courseId }).FirstOrDefault();

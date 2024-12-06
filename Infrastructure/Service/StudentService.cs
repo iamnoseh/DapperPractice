@@ -11,11 +11,11 @@ public class StudentService: IStudentService
     {
         try
         {
-            string connectionString = "Server=127.0.0.1;Port=5432;Database=CourseDB;User Id=postgres;Password=12345;";
+            string connectionString = "Server=127.0.0.1;Port=5432;Database=coursedb;User Id=postgres;Password=12345;";
             using var connection = new NpgsqlConnection(connectionString);
             string cmd =
                 "Insert into Students(id,Full_name,Age,Phone,Address,Email) values (@id,@full_name, @age, @phone, @address, @email)";
-            connection.Query(cmd, student);
+            connection.Execute(cmd, student);
             Console.WriteLine("Student added !");
         }
         catch (NpgsqlException e)
@@ -34,7 +34,7 @@ public class StudentService: IStudentService
     {
         try
         {
-            string connectionString = "Server=127.0.0.1;Port=5432;Database=CourseDB;User Id=postgres;Password=12345;";
+            string connectionString = "Server=127.0.0.1;Port=5432;Database=coursedb;User Id=postgres;Password=12345;";
             using var connection = new NpgsqlConnection(connectionString);
             string cmd =
                 "Select * from Students";
@@ -53,10 +53,10 @@ public class StudentService: IStudentService
     {
         try
         {
-            string connectionString = "Server=127.0.0.1;Port=5432;Database=CourseDB;User Id=postgres;Password=12345;";
+            string connectionString = "Server=127.0.0.1;Port=5432;Database=coursedb;User Id=postgres;Password=12345;";
             using var connection = new NpgsqlConnection(connectionString);
             string cmd = "Delete from Students where id = @id";
-            connection.Query(cmd, new {id = id});
+            connection.Execute(cmd, new {id = id});
         }
         catch (NpgsqlException e)
         {
@@ -74,7 +74,7 @@ public class StudentService: IStudentService
     {
         try
         {
-            string connectionString = "Server=127.0.0.1;Port=5432;Database=CourseDB;User Id=postgres;Password=12345;";
+            string connectionString = "Server=127.0.0.1;Port=5432;Database=coursedb;User Id=postgres;Password=12345;";
             using var connection = new NpgsqlConnection(connectionString);
             string cmd = "Select * from Students where id = @id";
            Student student = connection.Query(cmd,new {id = id}).FirstOrDefault();
@@ -91,10 +91,10 @@ public class StudentService: IStudentService
     {
         try
         {
-            string connectionString = "Server=127.0.0.1;Port=5432;Database=CourseDB;User Id=postgres;Password=12345;";
+            string connectionString = "Server=127.0.0.1;Port=5432;Database=coursedb;User Id=postgres;Password=12345;";
             using var connection = new NpgsqlConnection(connectionString);
-            string cmd = "Updaet Students where id = @id";
-            connection.Query(cmd, student);
+            string cmd = "Update Students set Full_Name = @Full_Name,Age = @Age,Phone = @Phone,Address = @Address where id = @id";
+            connection.Execute(cmd, student);
             Console.WriteLine("Student updated !");
         }
         catch (NpgsqlException e)
