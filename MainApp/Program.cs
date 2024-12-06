@@ -11,3 +11,14 @@ foreach (var t in teacher)
 {
     Console.WriteLine(t.Id + " || " + t.FullName+ " || " + t.Email + " || " + t.Phone + " || " + t.Address);
 }
+
+Console.WriteLine(new string('-',20));
+
+
+
+CourseService courseService = new CourseService();
+var courses = courseService.GetCourses();
+foreach (var course in courses)
+{
+    Console.WriteLine($"ID: {course.CourseID} || Name: {course.Name} || Description: {course.Description} || CreateDate: {course.CreatedDate} || EndDate: {course.EndDate}");
+}
